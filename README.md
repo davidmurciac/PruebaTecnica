@@ -1,2 +1,2 @@
 # PruebaTecnica
-Repositorio de prueba Técnica CCe
+Repositorio de prueba Técnica CCE
