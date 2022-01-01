@@ -13,7 +13,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import co.gov.colombiacompra.tienda.security.JWTAuthorizationFilter;
 
 
-
+/**
+ * Clase que representa la aplicación tienda y que contiene las configuraciones 
+ * de la misma basada en el Framework de Spring 
+ * 
+ * @author David.Murcia
+ *
+ */
 @SpringBootApplication
 @ComponentScan(basePackages = "co.gov.colombiacompra.tienda")
 public class TiendaApplication {
@@ -32,7 +38,7 @@ public class TiendaApplication {
 				.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
 				.authorizeRequests()			
 				.antMatchers(HttpMethod.POST, "/usuario/login").permitAll()
-				.antMatchers(HttpMethod.POST, "/usuario/crear").permitAll()
+				.antMatchers(HttpMethod.POST, "/usuario").permitAll()
 				.anyRequest().authenticated()
 				
 				;

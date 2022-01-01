@@ -11,10 +11,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Check;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import co.gov.colombiacompra.tienda.domain.dto.CarritoDTO;
-import co.gov.colombiacompra.tienda.domain.dto.ProductoDTO;
 import lombok.Getter;
 import lombok.Setter;
 

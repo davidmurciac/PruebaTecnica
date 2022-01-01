@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import co.gov.colombiacompra.tienda.domain.enumeration.Rol;
 import co.gov.colombiacompra.tienda.domain.enumeration.TipoIdentificacion;
 import lombok.Getter;
@@ -62,6 +64,7 @@ public class Usuario implements Serializable{
 	@Column(unique = true, name = "LOGIN",length = 30, nullable = false)
 	private String login;
 	
+	@JsonIgnore
 	@Column(name = "PASSWORD", nullable = false)
 	private String password;
 	

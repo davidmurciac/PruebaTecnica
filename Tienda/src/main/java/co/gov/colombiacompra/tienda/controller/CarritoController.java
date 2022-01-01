@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.gov.colombiacompra.tienda.domain.dto.CarritoDTO;
@@ -21,61 +21,40 @@ import co.gov.colombiacompra.tienda.domain.dto.ItemDTO;
 import co.gov.colombiacompra.tienda.security.util.SecurityUtil;
 import co.gov.colombiacompra.tienda.service.CarritoService;
 
-
 /**
- * Controlador para acceder a los servicios relacionados con el carrito de Compras.
+ * Controlador para acceder a los servicios relacionados con el carrito de
+ * Compras.
  * 
- * Permite la creación de un único carrito de compras activo por usuario
- * Permite la adición, eliminación o modificación de los items asociados a un carrito 
- * de compras.
- * Permite vacíar un carrito de compras
- * Permite deshabilitar un carrito de compras tras la venta exitosa.
+ * Permite la creación de un único carrito de compras activo por usuario Permite
+ * la adición, eliminación o modificación de los items asociados a un carrito de
+ * compras. Permite vacíar un carrito de compras Permite deshabilitar un carrito
+ * de compras tras la venta exitosa.
  * 
  * 
  * @author David Murcia
  *
  */
 @RestController
-@RequestMapping("carrito")
+@RequestMapping(value = "carrito", produces = "application/json", consumes = "application/json")
 public class CarritoController {
 
-	
 	/**
 	 * Servicio de Carrito
 	 */
 	@Inject
 	private CarritoService carritoService;
-	
-	/**
-	 * Método que dado el token, obtiene el id del usuario autenticado
-	 * 
-	 * @param Authorization header de autorización del request que invoca
-	 *        éste método
-	 *        
-	 * @return Identificador del usuario autenticado.
-	 * 
-	 * @author David.Murcia
-	 */
-	private Long ObtenerUid(String authorization) {
-		String jwtToken = authorization.replace("Bearer ", "");
 
-		Long uid = Long.parseLong(SecurityUtil.getTokenParam(jwtToken, "uid"));
-
-		return uid;
-	}
-	
 	/**
 	 * Método PUT para vaciar el carro y actualizar el stock del producto
 	 * 
-	 * @param authorizationheader de autorización del request que invoca
-	 *        éste método
+	 * @param authorizationheader de autorización del request que invoca éste método
 	 * @return ResponseEntity con la información del Carrito actualizado
 	 * 
 	 * @author David.Murcia
 	 */
 	@PutMapping("vaciar-carro")
 	public ResponseEntity<CarritoDTO> actualizar(@RequestHeader("Authorization") String authorization) {
-		Long uid = ObtenerUid(authorization);
+		Long uid = SecurityUtil.ObtenerUid(authorization);
 		CarritoDTO carritoDTO;
 		try {
 			carritoDTO = carritoService.vaciarCarrito(uid);
@@ -91,15 +70,14 @@ public class CarritoController {
 	/**
 	 * Método PUT para deshabilitar el carro tras la finalización de la compra
 	 * 
-	 * @param authorizationheader de autorización del request que invoca
-	 *        éste método
+	 * @param authorizationheader de autorización del request que invoca éste método
 	 * @return ResponseEntity con información de éxito o error.
 	 * 
 	 * @author David.Murcia
 	 */
 	@PutMapping("finalizar-compra")
 	public ResponseEntity<String> deshabilitarCarrito(@RequestHeader("Authorization") String authorization) {
-		Long uid = ObtenerUid(authorization);
+		Long uid = SecurityUtil.ObtenerUid(authorization);
 		try {
 			carritoService.deshabilitarCarrito(uid);
 
@@ -110,21 +88,21 @@ public class CarritoController {
 			return new ResponseEntity<>(null, headers, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	/**
-	 * Método Post para la creación de ítems en el carro. 
+	 * Método Post para la creación de ítems en el carro.
 	 * 
-	 * @param authorization header de autorización del request que invoca
-	 *        éste método
-	 * @param itemDTO registro de producto a registrarle la cantidad
+	 * @param authorization header de autorización del request que invoca éste
+	 *                      método
+	 * @param itemDTO       registro de producto a registrarle la cantidad
 	 * @return ResponseEntity con la información del Carrito creado
 	 * 
 	 * @author David.Murcia
 	 */
-	@PostMapping("item/crear")
+	@PostMapping("item")
 	public ResponseEntity<CarritoDTO> agregar(@RequestHeader("Authorization") String authorization,
-			@RequestParam("producto") ItemDTO itemDTO) {
-		Long uid = ObtenerUid(authorization);
+			@RequestBody ItemDTO itemDTO) {
+		Long uid = SecurityUtil.ObtenerUid(authorization);
 		CarritoDTO carritoDTO;
 		try {
 			carritoDTO = carritoService.agregarProducto(uid, itemDTO);
@@ -137,21 +115,20 @@ public class CarritoController {
 
 	}
 
-	
 	/**
-	 * Método PUT para la actualización de los ítems en el carro 
+	 * Método PUT para la actualización de los ítems en el carro
 	 * 
-	 * @param authorization header de autorización del request que invoca
-	 *        éste método
-	 * @param itemDTO registro de producto a actualizarle la cantidad
+	 * @param authorization header de autorización del request que invoca éste
+	 *                      método
+	 * @param itemDTO       registro de producto a actualizarle la cantidad
 	 * @return ResponseEntity con la información del Carrito actualizado
 	 * 
 	 * @author David.Murcia
 	 */
-	@PutMapping("item/actualizar")
+	@PutMapping("item")
 	public ResponseEntity<CarritoDTO> actualizar(@RequestHeader("Authorization") String authorization,
-			@RequestParam("producto") ItemDTO itemDTO) {
-		Long uid = ObtenerUid(authorization);
+			@RequestBody ItemDTO itemDTO) {
+		Long uid = SecurityUtil.ObtenerUid(authorization);
 		CarritoDTO carritoDTO;
 		try {
 			carritoDTO = carritoService.actualizarProducto(uid, itemDTO);
@@ -163,31 +140,31 @@ public class CarritoController {
 		}
 
 	}
-	
+
 	/**
 	 * Método de eliminación del registro de producto en el carro.
 	 * 
-	 * @param authorization header de autorización del request que invoca
-	 *        éste método
-	 * @param itemDTO registro de producto a eliminar
+	 * @param authorization header de autorización del request que invoca éste
+	 *                      método
+	 * @param itemDTO       registro de producto a eliminar
 	 * @return ResponseEntity con la información del Carrito actualizado
 	 * 
 	 * @author David.Murcia
 	 */
-	@DeleteMapping("item/eliminar")
+	@DeleteMapping("item")
 	public ResponseEntity<CarritoDTO> eliminar(@RequestHeader("Authorization") String authorization,
-			@RequestParam("producto") ItemDTO itemDTO) {
-		Long uid = ObtenerUid(authorization);
+			@RequestBody ItemDTO itemDTO) {
+		Long uid = SecurityUtil.ObtenerUid(authorization);
 		CarritoDTO carritoDTO = carritoService.eliminarProducto(uid, itemDTO);
 
 		return new ResponseEntity<CarritoDTO>(carritoDTO, HttpStatus.OK);
 	}
-	
+
 	/**
 	 * Método que lista los productos asociados a un carrito
 	 * 
-	 * @param authorization header de autorización del request que invoca
-	 *        éste método
+	 * @param authorization header de autorización del request que invoca éste
+	 *                      método
 	 * @return ResponseEntity con la información de los items (Producto y cantidad)
 	 *         asociados al Carrito
 	 * 
@@ -199,7 +176,7 @@ public class CarritoController {
 	public ResponseEntity<List<ItemDTO>> listarProductos(@RequestHeader("Authorization") String authorization)
 			throws Exception {
 
-		Long uid = ObtenerUid(authorization);
+		Long uid = SecurityUtil.ObtenerUid(authorization);
 		List<ItemDTO> itemsDTO = carritoService.listarProductos(uid);
 
 		return new ResponseEntity<List<ItemDTO>>(itemsDTO, HttpStatus.OK);

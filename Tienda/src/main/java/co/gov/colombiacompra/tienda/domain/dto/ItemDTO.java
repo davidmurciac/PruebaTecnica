@@ -2,8 +2,6 @@ package co.gov.colombiacompra.tienda.domain.dto;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +16,6 @@ public class ItemDTO implements Serializable {
 	
 	private Long idItem;
 	
-	@JsonIgnore
 	private CarritoDTO carrito;
 		
 	private ProductoDTO producto;

@@ -62,12 +62,12 @@ public class CarritoService {
 	 * el carro de compras asociado, de no tener ninguno activo, procede
 	 * a crearlo.
 	 * 
-	 * @param usuarioId
+	 * @param idUsuario
 	 * @return Entidad Carrito que se asocia una sola vez al 
 	 *         tiempo por usuario
 	 */
-	public Carrito obtenerCarrito(Long usuarioId) {
-		Usuario usuario = usuarioRepository.findByUsuarioId(usuarioId);
+	public Carrito obtenerCarrito(Long idUsuario) {
+		Usuario usuario = usuarioRepository.findByIdUsuario(idUsuario);
 		
 		Carrito carrito = carritoRepository.findByUsuarioAndActivo(usuario,true);
 				

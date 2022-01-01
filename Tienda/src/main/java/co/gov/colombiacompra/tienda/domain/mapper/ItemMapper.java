@@ -15,7 +15,7 @@ import co.gov.colombiacompra.tienda.domain.dto.UsuarioDTO;
 public interface ItemMapper extends MapStructMapper<Item, ItemDTO> {
 	
 	 @Override
-	 @Mapping(source="producto", target = "productoDTO")
+	 @Mapping(source="producto", target = "producto")
 	 ItemDTO entityToDTO(Item entity);
 
 }

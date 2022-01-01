@@ -13,10 +13,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Check;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import co.gov.colombiacompra.tienda.domain.dto.CarritoDTO;
-import co.gov.colombiacompra.tienda.domain.dto.ProductoDTO;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,6 +36,7 @@ public class Item implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "ID_CARRITO")
+	@JsonBackReference
 	private Carrito carrito;
 		
 	@ManyToOne

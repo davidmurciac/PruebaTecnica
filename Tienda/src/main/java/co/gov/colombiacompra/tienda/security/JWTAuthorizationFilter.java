@@ -21,6 +21,14 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
+/**
+ * Clase de implementación de Filtro de autorización JWT proporcionada
+ * por JWT y adaptada al proyecto de carrito de Compras
+ * 
+ * 
+ * @author David.Murcia
+ *
+ */
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
 	private final String HEADER = "Authorization";

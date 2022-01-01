@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,9 +40,10 @@ public class Carrito implements Serializable{
 	@JoinColumn(name = "ID_USUARIO")
 	private Usuario usuario;
 	
-	@OneToMany(fetch = FetchType.EAGER, 
+	@OneToMany(fetch = FetchType.LAZY, 
 			   mappedBy = "carrito", 
 			   cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private List<Item> items;
 	
 	@Column(name = "ACTIVO")

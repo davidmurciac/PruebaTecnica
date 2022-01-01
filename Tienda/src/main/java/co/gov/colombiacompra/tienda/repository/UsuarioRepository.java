@@ -10,8 +10,27 @@ import co.gov.colombiacompra.tienda.domain.enumeration.TipoIdentificacion;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	
-	public Usuario findByUsuarioId(Long usuarioId);
-
+	
+	/**
+	 * Méteodo que busca un usuario dado un id
+	 * 
+	 * @param idUsuario identificador único asociado a un usuario
+	 * 
+	 * @return Entidad Usuario obtenida
+	 * 
+	 * @author David.Murcia
+	 */
+	public Usuario findByIdUsuario(Long idUsuario);
+	
+	/**
+	 * Méteodo que busca un producto dado su login
+	 * 
+	 * @param login cuenta de usuario única
+	 * 
+	 * @return Entidad Usuario obtenida
+	 * 
+	 * @author David.Murcia
+	 */
 	public Usuario findByLogin(String login);
 		
 	

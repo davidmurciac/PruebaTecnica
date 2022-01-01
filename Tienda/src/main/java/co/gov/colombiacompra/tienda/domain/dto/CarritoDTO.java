@@ -1,7 +1,7 @@
 package co.gov.colombiacompra.tienda.domain.dto;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +20,7 @@ public class CarritoDTO implements Serializable{
 	
 	private UsuarioDTO usuario;
 	
-	private List<ItemDTO> items;
+	private Set<ItemDTO> items;
 	
 	private Boolean activo;
 
